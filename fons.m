@@ -1,4 +1,3 @@
-%% Funció detecció de Fons
 % Per detectar el fons, hem fet servir el mètode d'Otsu per trobar els
 % llindars, ja que degut a les iluminacions variants fer servir un llindar
 % estàtic en totes les imatges donava resultats subòtpims. Posteriorment a

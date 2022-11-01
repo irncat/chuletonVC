@@ -1,4 +1,3 @@
-%% Funció separació greix-carn
 % Hem decidit pintar el greix en blanc, la carn de negre i el fons de gris.
 
 function im_res = greixcarn(im,thr)

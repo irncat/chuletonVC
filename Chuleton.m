@@ -1,6 +1,4 @@
 %% HOMEWORK 3 
-% Les definicions de les funcions es poden trobar al final d'aquest
-% document.
 
 %% Imatges Originals
 
@@ -17,7 +15,8 @@ subplot(1,3,3), imshow(im_or{14}), title('Chuleton 3');
 
 %% Selecció de regió d'Interés
 % Retallem manualment les imatges mitjançant la eina "imcrop".
-% Nota: al guardar les imatges desde matlab s'ha canviat el format a .tif.
+% Nota: al guardar les imatges desde matlab s'ha canviat el format a .tif,
+% i s'ha afegit un "padding" blanc que hem eliminat.
 
 %for k=1:numel(im)
 %  figure, imshow(im{k}), title('Chuleton 1');
@@ -37,12 +36,16 @@ subplot(1,3,2), imshow(im_crop{13}), title('Chuleton 2');
 subplot(1,3,3), imshow(im_crop{14}), title('Chuleton 3');
 
 %% Detecció de fons
+% <include>fons.m</include>
+
 figure, subplot(1,3,1), imshow(fons(im_crop{12})), title('Chuleton 1');
 subplot(1,3,2), imshow(fons(im_crop{13})), title('Chuleton 2');
 subplot(1,3,3), imshow(fons(im_crop{14})), title('Chuleton 3');
 
 
 %% Thresh-hold arbitrari
+% <include>greixcarn.m</include>
+
 figure, subplot(1,3,1), imshow(greixcarn(im_crop{12},0.6)), title('Chuleton 1');
 subplot(1,3,2), imshow(greixcarn(im_crop{13},0.6)), title('Chuleton 2');
 subplot(1,3,3), imshow(greixcarn(im_crop{14},0.6)), title('Chuleton 3');
