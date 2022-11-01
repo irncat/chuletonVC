@@ -1,4 +1,4 @@
-% Hem decidit pintar el greix en blanc, la carn de negre i el fons de gris.
+% Hem decidit pintar el greix en blanc, la carn en negre i el fons en gris.
 
 function im_res = greixcarn(im,thr)
     im_bg = fons(im);
