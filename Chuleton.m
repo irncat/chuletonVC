@@ -43,11 +43,32 @@ subplot(1,3,2), imshow(fons(im_crop{13})), title('Chuleton 2');
 subplot(1,3,3), imshow(fons(im_crop{14})), title('Chuleton 3');
 
 
-%% Thresh-hold arbitrari
+%% Funció de thresh-holding
 % <include>greixcarn.m</include>
 
-figure, subplot(1,3,1), imshow(greixcarn(im_crop{12},0.6)), title('Chuleton 1');
-subplot(1,3,2), imshow(greixcarn(im_crop{13},0.6)), title('Chuleton 2');
-subplot(1,3,3), imshow(greixcarn(im_crop{14},0.6)), title('Chuleton 3');
+greixcarn1 = greixcarn(im_crop{12},0.6);
+figure, subplot(1,3,1), imshow(greixcarn1), title('Chuleton 1');
+greixcarn2 = greixcarn(im_crop{13},0.6);
+subplot(1,3,2), imshow(greixcarn2), title('Chuleton 2');
+greixcarn3 = greixcarn(im_crop{14},0.6);
+subplot(1,3,3), imshow(greixcarn3), title('Chuleton 3');
 
+%% Càlcul de Percentatge de Greix
+% <include>percentgreix.m</include>
 
+display(percentgreix(greixcarn1));
+display(percentgreix(greixcarn2));
+display(percentgreix(greixcarn3));
+
+%% Càlcul de percentatge de greix amb diferents mètodes
+% <include>resultats.m</include>
+
+%% MÈTODE 1 - Selecció manual amb histograma
+% <include>thr_manual.m</include>
+
+figure, histogram(im_crop{12}), title('Histograma Chuletón 12');
+
+thr_manual = @thr_manual;
+SEL_MAN = resultats(im_crop,thr_manual);
+
+%% MÈTODE 2 - Selecció automàtica amb Otsu

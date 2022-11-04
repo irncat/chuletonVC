@@ -1,0 +1,6 @@
+% pre: im es la sortida de la funció greixcarn(...)
+function percent = percentgreix(im)
+    [N, edges] = histcounts(im, 3);
+    greix = N(1);
+    carn  = N(3);
+    
