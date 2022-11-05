@@ -1,6 +1,7 @@
 %% HOMEWORK 3 
 
 %% Imatges Originals
+clos
 
 f=dir('*.bmp');
 files={f.name};
@@ -70,6 +71,7 @@ display(percentgreix(greixcarn3));
 
 %% MÈTODE 1 - Selecció manual amb histograma
 % <include>thr_manual.m</include>
+close all;
 
 figure, histogram(im_crop{12}), title('Histograma Chuletón 12');
 
@@ -77,30 +79,41 @@ thr_manual = @thr_manual;
 SEL_MAN = resultats(im_crop,thr_manual);
 
 %% MÈTODE 2 - Selecció automàtica amb Otsu
+close all;
+
 otsu = @graythresh;
 SEL_OTSU = resultats(im_crop, otsu);
 
 %% MÈTODE 3 - Selecció automàtica amb Pun
 % <include>pun.m</include>
+close all;
 
 pun = @pun;
 SEL_PUN = resultats(im_crop, pun);
+
 %% MÈTODE 4 - Selecció automàtica amb Riddler i Calvard
 % <include>ridncalv.m</include>
+close all;
 
 ridncalv = @ridncalv;
 SEL_RNC = resultats(im_crop, ridncalv);
 
 
-%% Taula comparativa
+%% Taules comparativa de percentatge de greix
+
 names = convertCharsToStrings(files);
 names = transpose(names);
 SEL_MAN = transpose(SEL_MAN);
 SEL_OTSU = transpose(SEL_OTSU);
 SEL_PUN = transpose(SEL_PUN);
 SEL_RNC = transpose(SEL_RNC);
-%%
 T = table(names, SEL_MAN(:,1), SEL_OTSU(:,1), ...
   SEL_PUN(:,1), SEL_RNC(:,1),'VariableNames', ...
   {'Imatge', 'Manual', 'Otsu', 'Pun', 'Riddle&Calvard'});
-disp
+disp(T)
+
+%% Taula comparativa de tresholds
+T2 = table(names, SEL_MAN(:,2)*256, SEL_OTSU(:,2)*256, ...
+  SEL_PUN(:,2)*256, SEL_RNC(:,2)*256,'VariableNames', ...
+  {'Imatge', 'Manual', 'Otsu', 'Pun', 'Riddle&Calvard'});
+disp(T2)

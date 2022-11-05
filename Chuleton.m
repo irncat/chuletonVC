@@ -1,9 +1,14 @@
 %% HOMEWORK 3 
 
 %% Imatges Originals
+close all; clc; clear all
 
 f=dir('*.bmp');
 files={f.name};
+names = convertCharsToStrings(files);
+for k=1:numel(names)
+    names(k) = erase(names(k),".bmp");
+end
 im_or=cell(1,14);
 for k=1:numel(files)
   im_or{k}=imread(files{k});
@@ -50,11 +55,11 @@ sgtitle('Fons');
 %% Funció de thresh-holding
 % <include>greixcarn.m</include>
 
-greixcarn1 = greixcarn(im_crop{12},0.6);
+greixcarn1 = greixcarn(im_crop{12},0.6,fons(im_crop{12}));
 figure, subplot(1,3,1), imshow(greixcarn1), title('Chuleton 1');
-greixcarn2 = greixcarn(im_crop{13},0.6);
+greixcarn2 = greixcarn(im_crop{13},0.6,fons(im_crop{13}));
 subplot(1,3,2), imshow(greixcarn2), title('Chuleton 2');
-greixcarn3 = greixcarn(im_crop{14},0.6);
+greixcarn3 = greixcarn(im_crop{14},0.6,fons(im_crop{14}));
 subplot(1,3,3), imshow(greixcarn3), title('Chuleton 3');
 sgtitle('Tresholding');
 
@@ -69,46 +74,53 @@ display(percentgreix(greixcarn3));
 % <include>resultats.m</include>
 
 %% MÈTODE 1 - Selecció manual amb histograma
-% <include>thr_manual.m</include>
+% Veient l'histograma hem interpretat que té 3 modes: la primera (~25)
+% representa el fons de la imatge, la segona (~125) representa la carn i la
+% tercera (~200) representa el greix. Per tant, escollim el threshhold 175
+% (aquests resultats probablement variarien segons el chuletón usat).
+
+close all;
 
 figure, histogram(im_crop{12}), title('Histograma Chuletón 12');
 
-thr_manual = @thr_manual;
-SEL_MAN = resultats(im_crop,thr_manual);
+thr_manual = @(~) double(175/255);
+SEL_MAN = resultats(im_crop,thr_manual,names);
 
 %% MÈTODE 2 - Selecció automàtica amb Otsu
+close all;
 
 otsu = @graythresh;
-SEL_OTSU = resultats(im_crop, otsu);
+SEL_OTSU = resultats(im_crop,otsu,names);
 
 %% MÈTODE 3 - Selecció automàtica amb Pun
 % <include>pun.m</include>
+close all;
 
 pun = @pun;
-SEL_PUN = resultats(im_crop, pun);
+SEL_PUN = resultats(im_crop,pun,names);
+
 %% MÈTODE 4 - Selecció automàtica amb Riddler i Calvard
 % <include>ridncalv.m</include>
+close all;
 
 ridncalv = @ridncalv;
-SEL_RNC = resultats(im_crop, ridncalv);
+SEL_RNC = resultats(im_crop,ridncalv,names);
 
 
 %% Taules comparativa de percentatge de greix
 
-names = convertCharsToStrings(files);
 names = transpose(names);
 SEL_MAN = transpose(SEL_MAN);
 SEL_OTSU = transpose(SEL_OTSU);
 SEL_PUN = transpose(SEL_PUN);
 SEL_RNC = transpose(SEL_RNC);
-% Taula de percentatge de greix
 T = table(names, SEL_MAN(:,1), SEL_OTSU(:,1), ...
   SEL_PUN(:,1), SEL_RNC(:,1),'VariableNames', ...
   {'Imatge', 'Manual', 'Otsu', 'Pun', 'Riddle&Calvard'});
 disp(T)
 
 %% Taula comparativa de tresholds
-T2 = table(names, SEL_MAN(:,2)*256, SEL_OTSU(:,2)*256, ...
-  SEL_PUN(:,2)*256, SEL_RNC(:,2)*256,'VariableNames', ...
+T2 = table(names, SEL_MAN(:,2), SEL_OTSU(:,2), ...
+  SEL_PUN(:,2), SEL_RNC(:,2),'VariableNames', ...
   {'Imatge', 'Manual', 'Otsu', 'Pun', 'Riddle&Calvard'});
 disp(T2)
