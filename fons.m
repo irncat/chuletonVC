@@ -6,7 +6,7 @@
 
 function im_bg = fons(im)
     % Trobem el llindar del fons amb el mètode d'Otsu
-    im_bg = im2bw(im, graythresh(im));
+    im_bg = imbinarize(im, graythresh(im));
     % Omplim forats (tambe es pot implementar amb reconstrucció)
     im_bg = imfill(im_bg,"holes");
 end

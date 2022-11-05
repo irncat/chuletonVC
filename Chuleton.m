@@ -12,6 +12,7 @@ end
 figure, subplot(1,3,1), imshow(im_or{12}), title('Chuleton 1');
 subplot(1,3,2), imshow(im_or{13}), title('Chuleton 2');
 subplot(1,3,3), imshow(im_or{14}), title('Chuleton 3');
+sgtitle('Originals');
 
 %% Selecció de regió d'Interés
 % Retallem manualment les imatges mitjançant la eina "imcrop".
@@ -34,6 +35,8 @@ end
 figure, subplot(1,3,1), imshow(im_crop{12}), title('Chuleton 1');
 subplot(1,3,2), imshow(im_crop{13}), title('Chuleton 2');
 subplot(1,3,3), imshow(im_crop{14}), title('Chuleton 3');
+sgtitle('Imatges retallades');
+
 
 %% Detecció de fons
 % <include>fons.m</include>
@@ -41,6 +44,7 @@ subplot(1,3,3), imshow(im_crop{14}), title('Chuleton 3');
 figure, subplot(1,3,1), imshow(fons(im_crop{12})), title('Chuleton 1');
 subplot(1,3,2), imshow(fons(im_crop{13})), title('Chuleton 2');
 subplot(1,3,3), imshow(fons(im_crop{14})), title('Chuleton 3');
+sgtitle('Fons');
 
 
 %% Funció de thresh-holding
@@ -52,6 +56,7 @@ greixcarn2 = greixcarn(im_crop{13},0.6);
 subplot(1,3,2), imshow(greixcarn2), title('Chuleton 2');
 greixcarn3 = greixcarn(im_crop{14},0.6);
 subplot(1,3,3), imshow(greixcarn3), title('Chuleton 3');
+sgtitle('Tresholding');
 
 %% Càlcul de Percentatge de Greix
 % <include>percentgreix.m</include>
@@ -72,3 +77,38 @@ thr_manual = @thr_manual;
 SEL_MAN = resultats(im_crop,thr_manual);
 
 %% MÈTODE 2 - Selecció automàtica amb Otsu
+
+otsu = @graythresh;
+SEL_OTSU = resultats(im_crop, otsu);
+
+%% MÈTODE 3 - Selecció automàtica amb Pun
+% <include>pun.m</include>
+
+pun = @pun;
+SEL_PUN = resultats(im_crop, pun);
+%% MÈTODE 4 - Selecció automàtica amb Riddler i Calvard
+% <include>ridncalv.m</include>
+
+ridncalv = @ridncalv;
+SEL_RNC = resultats(im_crop, ridncalv);
+
+
+%% Taules comparativa de percentatge de greix
+
+names = convertCharsToStrings(files);
+names = transpose(names);
+SEL_MAN = transpose(SEL_MAN);
+SEL_OTSU = transpose(SEL_OTSU);
+SEL_PUN = transpose(SEL_PUN);
+SEL_RNC = transpose(SEL_RNC);
+% Taula de percentatge de greix
+T = table(names, SEL_MAN(:,1), SEL_OTSU(:,1), ...
+  SEL_PUN(:,1), SEL_RNC(:,1),'VariableNames', ...
+  {'Imatge', 'Manual', 'Otsu', 'Pun', 'Riddle&Calvard'});
+disp(T)
+
+%% Taula comparativa de tresholds
+T2 = table(names, SEL_MAN(:,2)*256, SEL_OTSU(:,2)*256, ...
+  SEL_PUN(:,2)*256, SEL_RNC(:,2)*256,'VariableNames', ...
+  {'Imatge', 'Manual', 'Otsu', 'Pun', 'Riddle&Calvard'});
+disp(T2)
