@@ -1,6 +1,7 @@
 %% HOMEWORK 3 
 
 %% Imatges Originals
+close all; clc; %clear all
 
 f=dir('*.bmp');
 files={f.name};
@@ -66,9 +67,27 @@ display(percentgreix(greixcarn3));
 %% MÈTODE 1 - Selecció manual amb histograma
 % <include>thr_manual.m</include>
 
+close all
+
 figure, histogram(im_crop{12}), title('Histograma Chuletón 12');
 
-thr_manual = @thr_manual;
-SEL_MAN = resultats(im_crop,thr_manual);
+thr_manual_f = @thr_manual;
+SEL_MAN = resultats(im_crop,thr_manual_f);
 
 %% MÈTODE 2 - Selecció automàtica amb Otsu
+% <include>thr_otsu_auto.m</include>
+
+close all
+
+thr_otsu_auto_f = @thr_otsu_auto;
+OTSU_AUTO = resultats(im_crop,thr_otsu_auto_f);
+
+%% MÈTODE 3 - Modificació d'Otsu
+% <include>thr_otsu_mod.m</include>
+
+close all
+
+thr_otsu_mod_f = @thr_otsu_mod;
+OTSU_MOD = resultats(im_crop,thr_otsu_mod_f);
+
+%% MÈTODE 4 - ???
